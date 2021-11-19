@@ -15,7 +15,6 @@ public class BikeInitPosition : MonoBehaviour
         player = GameObject.Find("OVRPlayerController");
         bike = GameObject.Find("bike");
         cameraPlayer = GameObject.Find("OVRPlayerController");
-
         cameraPlayer.transform.position = bike.transform.position;
 
     }

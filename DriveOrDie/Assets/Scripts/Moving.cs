@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Moving : MonoBehaviour
 {
-    float multForce = 40f;
-
+    const float MAX_SPEED = 35f;
+    float multForce, acceleration;
+    
     public Rigidbody player;
     public Rigidbody bike;
     public Transform bikeRotation;
@@ -13,7 +14,43 @@ public class Moving : MonoBehaviour
     public Transform handLeft;
     public Transform handRight;
 
-    // Start is called before the first frame update
+    public void checkHighestSpeed()
+    {
+        if (multForce >= 35f)
+        {
+            multForce = MAX_SPEED;
+            acceleration = 0f;
+        }
+    }
+    public void checkLowestSpeed()
+    {
+        if (multForce <= 0f)
+        {
+            multForce = 0f;
+            acceleration = 0f;
+        }
+    }
+    public void applyAcceleration()
+    {
+        multForce += acceleration;
+        checkHighestSpeed(); checkLowestSpeed();
+        bike.velocity = bike.transform.forward * -multForce;
+        player.velocity = bike.velocity;
+    }
+    public void checkChangeOfAcceleration()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            acceleration += 0.05f;
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            acceleration -= 0.05f; 
+            return;
+        }
+
+    }
     void Start()
     {
         bike = GameObject.Find("bike").GetComponent<Rigidbody>();
@@ -23,28 +60,32 @@ public class Moving : MonoBehaviour
         handLeft = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         handRight = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         bike.velocity = bike.transform.forward *-multForce;
-        player.velocity = bike.velocity; 
+        player.velocity = bike.velocity;
+        multForce = MAX_SPEED;
+        acceleration = -0.05f;
     }
 
     // Update is called once per frame
     void Update()
     {
-       //if (handLeft.localRotation.z >= 0.5 && handLeft.localRotation.z <= 0.8) {
+        //if (handLeft.localRotation.z >= 0.5 && handLeft.localRotation.z <= 0.8) {
 
-            Debug.Log(OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow));
-            if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow)) { 
-                bikeRotation.Rotate(new Vector3(0, -1f, 0));
-                playerRotation.Rotate(new Vector3(0, -1f, 0));
-                bike.velocity = bike.transform.forward * -multForce;
-                player.velocity = bike.velocity;
+        applyAcceleration();
+        checkChangeOfAcceleration();
+        //Debug.Log(OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow));
+        if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow)) { 
+            bikeRotation.Rotate(new Vector3(0, -1f, 0));
+            playerRotation.Rotate(new Vector3(0, -1f, 0));
+            bike.velocity = bike.transform.forward * -multForce;
+            player.velocity = bike.velocity;
 
-            } else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow)) {
-                bikeRotation.Rotate(new Vector3(0, 1f, 0));
-                playerRotation.Rotate(new Vector3(0, 1f, 0));
-                bike.velocity = bike.transform.forward * -multForce;
-                player.velocity = bike.velocity;
+        } else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow)) {
+            bikeRotation.Rotate(new Vector3(0, 1f, 0));
+            playerRotation.Rotate(new Vector3(0, 1f, 0));
+            bike.velocity = bike.transform.forward * -multForce;
+            player.velocity = bike.velocity;
        
-            }
-      //  }
+        } 
+        //  }
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Moving : MonoBehaviour
 {
     const float MAX_SPEED = 35f;
-    float multForce, acceleration;
+    public float multForce, acceleration;
     
     public Rigidbody player;
     public Rigidbody bike;
@@ -14,6 +15,10 @@ public class Moving : MonoBehaviour
     public Transform handLeft;
     public Transform handRight;
 
+    public float timeIdle, timeStart;
+
+    public Text speedInApp;
+    public bool firstAccelerationDone;
     public void checkHighestSpeed()
     {
         if (multForce >= 35f)
@@ -31,7 +36,7 @@ public class Moving : MonoBehaviour
         }
     }
     public void applyAcceleration()
-    {
+    {     
         multForce += acceleration;
         checkHighestSpeed(); checkLowestSpeed();
         bike.velocity = bike.transform.forward * -multForce;
@@ -39,14 +44,27 @@ public class Moving : MonoBehaviour
     }
     public void checkChangeOfAcceleration()
     {
+        if (firstAccelerationDone)
+        {
+            timeIdle = Time.time - timeStart;
+            if (timeIdle >= 10f)
+            {
+                acceleration = -0.1f;
+                timeStart = Time.time;
+                timeIdle = 0;
+            }
+        }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+            firstAccelerationDone = true;
             acceleration += 0.05f;
+            timeStart = Time.time;
             return;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            acceleration -= 0.05f; 
+            acceleration -= 0.05f;
+            timeStart = Time.time;
             return;
         }
 
@@ -63,15 +81,19 @@ public class Moving : MonoBehaviour
         player.velocity = bike.velocity;
         multForce = MAX_SPEED;
         acceleration = -0.05f;
+        speedInApp = GameObject.Find("Bomb/Module1/Canvas/Speed").GetComponent<Text>();
+        timeStart = Time.time;
+        firstAccelerationDone = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         //if (handLeft.localRotation.z >= 0.5 && handLeft.localRotation.z <= 0.8) {
-
+        
         applyAcceleration();
         checkChangeOfAcceleration();
+        speedInApp.text = multForce.ToString("F1");
         //Debug.Log(OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow));
         if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow)) { 
             bikeRotation.Rotate(new Vector3(0, -1f, 0));
@@ -79,12 +101,12 @@ public class Moving : MonoBehaviour
             bike.velocity = bike.transform.forward * -multForce;
             player.velocity = bike.velocity;
 
+
         } else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow)) {
             bikeRotation.Rotate(new Vector3(0, 1f, 0));
             playerRotation.Rotate(new Vector3(0, 1f, 0));
             bike.velocity = bike.transform.forward * -multForce;
             player.velocity = bike.velocity;
-       
         } 
         //  }
     }

@@ -20,13 +20,17 @@ public class Collisiones : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.name == "Poste8")
         {
             carTransform.Rotate(0, 45, 0);
             carRigidBody.transform.position = new Vector3(2.03f, -0f, -120f);
             carRigidBody.velocity = carRigidBody.transform.right * -multForce;
+
         }
-        else if(other.gameObject.name == "GrabVolumeBig" || other.gameObject.name == "GrabVolumeSmall" || other.gameObject.name == "acelerador")
+        
+        else if(other.gameObject.name == "GrabVolumeBig" || other.gameObject.name == "GrabVolumeSmall" || 
+                other.gameObject.name == "acelerador"|| other.gameObject.name == "Wall1")
         {
             ; // Do nothing
         }

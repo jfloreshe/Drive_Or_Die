@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4471,16 +4471,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662773433}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -123.57, y: -1.5, z: -420.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0.92387956, z: 0, w: 0.38268343}
+  m_LocalPosition: {x: -123.57, y: -0.8, z: -420.9}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1226264323}
   - {fileID: 1657846810}
   - {fileID: 1996419151}
   m_Father: {fileID: 1273725266}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 135, z: 0}
 --- !u!1001 &667745819
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7258,16 +7258,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153836672}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -214.6, y: -1.5, z: -90.24}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -0.92387956, z: 0, w: 0.38268343}
+  m_LocalPosition: {x: -214.6, y: -0.8, z: -90.24}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1918394234}
   - {fileID: 14669026}
   - {fileID: 1325822583}
   m_Father: {fileID: 1273725266}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
 --- !u!1001 &1175841586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12420,16 +12420,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788696579}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: -0.8, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 193258029}
   - {fileID: 1081203025}
   - {fileID: 573049155}
   m_Father: {fileID: 1273725266}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
 --- !u!1001 &1800066996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12607,18 +12607,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dce58d0363d1f41bd27deef4d48a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multForce: 0
-  acceleration: 0
-  player: {fileID: 0}
-  bike: {fileID: 0}
-  bikeRotation: {fileID: 0}
-  playerRotation: {fileID: 0}
-  handLeft: {fileID: 0}
-  handRight: {fileID: 0}
-  timeIdle: 0
-  timeStart: 0
-  speedInApp: {fileID: 0}
-  firstAccelerationDone: 0
 --- !u!4 &1828305211
 Transform:
   m_ObjectHideFlags: 0

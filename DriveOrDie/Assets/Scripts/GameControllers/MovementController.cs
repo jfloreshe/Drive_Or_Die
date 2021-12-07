@@ -53,7 +53,7 @@ public class MovementController : Controller
     }
     public void applyAcceleration()
     {
-        currentVelocity += currentAcceleration*Time.deltaTime;
+        currentVelocity += currentAcceleration*Time.deltaTime*20;
         checkHighestSpeed(); checkLowestSpeed();
         bike.velocity = bike.transform.forward * -currentVelocity;
         player.velocity = bike.velocity;

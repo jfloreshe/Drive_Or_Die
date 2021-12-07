@@ -19,6 +19,11 @@ public class Moving : MonoBehaviour
 
     public Text speedInApp;
     public bool firstAccelerationDone;
+<<<<<<< HEAD
+=======
+
+    public MainControllers controllers;
+>>>>>>> pause
     public void checkHighestSpeed()
     {
         if (multForce >= 35f)
@@ -81,9 +86,16 @@ public class Moving : MonoBehaviour
         player.velocity = bike.velocity;
         multForce = MAX_SPEED;
         acceleration = -0.05f;
+<<<<<<< HEAD
         speedInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         timeStart = Time.time;
         firstAccelerationDone = false;
+=======
+        speedInApp = GameObject.Find("Bomb/Module1/Canvas/Speed").GetComponent<Text>();
+        timeStart = Time.time;
+        firstAccelerationDone = false;
+        controllers = new MainControllers();
+>>>>>>> pause
     }
 
     // Update is called once per frame
@@ -93,6 +105,10 @@ public class Moving : MonoBehaviour
         
         applyAcceleration();
         checkChangeOfAcceleration();
+<<<<<<< HEAD
+=======
+        controllers.checkUserInputs();
+>>>>>>> pause
         speedInApp.text = multForce.ToString("F1");
         //Debug.Log(OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow));
         if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow)) { 
@@ -107,7 +123,13 @@ public class Moving : MonoBehaviour
             playerRotation.Rotate(new Vector3(0, 1f, 0));
             bike.velocity = bike.transform.forward * -multForce;
             player.velocity = bike.velocity;
+<<<<<<< HEAD
         } 
         //  }
+=======
+        }
+        //  }
+        
+>>>>>>> pause
     }
 }

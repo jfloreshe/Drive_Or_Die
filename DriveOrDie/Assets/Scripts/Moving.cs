@@ -81,7 +81,7 @@ public class Moving : MonoBehaviour
         player.velocity = bike.velocity;
         multForce = MAX_SPEED;
         acceleration = -0.05f;
-        speedInApp = GameObject.Find("Bomb/Module1/Canvas/Speed").GetComponent<Text>();
+        speedInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         timeStart = Time.time;
         firstAccelerationDone = false;
     }

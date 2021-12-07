@@ -7,6 +7,7 @@ public class Collisiones : MonoBehaviour
     float multForce = 30f;
     public Rigidbody carRigidBody;
     public Transform carTransform;
+    
     // Start is called before the first frame update
     void Start()
     {

@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class MovementController : Controller
 {
-    const float MAX_SPEED = 35f;
-    const float MIN_SPEED = 0f;
-    public float currentVelocity, currentAcceleration;
+    public float currentAcceleration;
     public float timeIdle, timeStart;
     public bool firstAccelerationDone;
     public Rigidbody player;
@@ -21,7 +19,6 @@ public class MovementController : Controller
 
     public MovementController()
     {
-        currentVelocity = MAX_SPEED;
         currentAcceleration = -0.05f;
         bike = GameObject.Find("bike").GetComponent<Rigidbody>();
         bikeRotation = GameObject.Find("bike").GetComponent<Transform>();
@@ -32,34 +29,38 @@ public class MovementController : Controller
         velocityInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         timeStart = Time.time;
         firstAccelerationDone = false;
-        bike.velocity = bike.transform.forward * -currentVelocity;
+        bike.velocity = bike.transform.forward * -BikeObject.velocity;
         player.velocity = bike.velocity;
     }
     public void checkHighestSpeed()
     {
-        if (currentVelocity >= MAX_SPEED)
+        if (BikeObject.velocity >= BikeObject.MAX_VELOCITY)
         {
-            currentVelocity = MAX_SPEED;
+            BikeObject.velocity = BikeObject.MAX_VELOCITY;
             currentAcceleration = 0f;
         }
     }
     public void checkLowestSpeed()
     {
-        if (currentVelocity <= MIN_SPEED)
+        if (BikeObject.velocity <= BikeObject.MIN_VELOCITY)
         {
-            currentVelocity = 0f;
+            BikeObject.velocity = 0f;
             currentAcceleration = 0f;
         }
     }
     public void applyAcceleration()
     {
-        currentVelocity += currentAcceleration*Time.deltaTime*20;
-        checkHighestSpeed(); checkLowestSpeed();
-        bike.velocity = bike.transform.forward * -currentVelocity;
-        player.velocity = bike.velocity;
-        //if idle then acceleration decrease
-        checkIdleStatus();
-        velocityInApp.text = currentVelocity.ToString("F1");
+        if (bike != null)
+        {
+            BikeObject.velocity += currentAcceleration * Time.deltaTime * 20;
+            checkHighestSpeed(); checkLowestSpeed();
+            bike.velocity = bike.transform.forward * -BikeObject.velocity;
+            player.velocity = bike.velocity;
+            //if idle then acceleration decrease
+            checkIdleStatus();
+            velocityInApp.text = BikeObject.velocity.ToString("F1");
+        }
+        
     }
     public void checkIdleStatus()
     {
@@ -76,33 +77,33 @@ public class MovementController : Controller
     }
     public void checkUserInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             firstAccelerationDone = true;
             currentAcceleration += 0.05f;
             timeStart = Time.time;
             return;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             currentAcceleration -= 0.05f;
             timeStart = Time.time;
             return;
         }
-        if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow))
+        if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             bikeRotation.Rotate(new Vector3(0, -1f, 0));
             playerRotation.Rotate(new Vector3(0, -1f, 0));
-            bike.velocity = bike.transform.forward * -currentVelocity;
+            bike.velocity = bike.transform.forward * -BikeObject.velocity;
             player.velocity = bike.velocity;
 
 
         }
-        else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow))
+        else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             bikeRotation.Rotate(new Vector3(0, 1f, 0));
             playerRotation.Rotate(new Vector3(0, 1f, 0));
-            bike.velocity = bike.transform.forward * -currentVelocity;
+            bike.velocity = bike.transform.forward * -BikeObject.velocity;
             player.velocity = bike.velocity;
 
         }

@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainControllers
+public static class MainControllers
 {
     
-    MenuController menu;
-    MovementController player;
-    public MainControllers() { 
-        menu = new MenuController();
-        player = new MovementController();
-    }
-
-    public void checkUserInputs()
+    public static MenuController menu;
+    public static MovementController player;
+  
+    public static void checkUserInputs()
     {
         menu.checkUserInput();
         player.applyAcceleration();

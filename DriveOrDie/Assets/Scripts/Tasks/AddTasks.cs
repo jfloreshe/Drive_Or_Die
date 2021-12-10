@@ -13,12 +13,12 @@ public static class AddedTasks
             {
                 if(task.Key == "TakeRoute")
                 {
-                    TaskPoolObject.addNewTask("TakeRoute1");
-                    TaskPoolObject.addNewTask("TakeRoute2");
+                    TaskPoolObject.taskPool.Add("TakeRoute1", false);
+                    TaskPoolObject.taskPool.Add("TakeRoute2", false);
                 }
                 else
                 {
-                    TaskPoolObject.addNewTask(task.Key);
+                    TaskPoolObject.taskPool[task.Key] = false;
                 }
                 tasks[task.Key] = true;
             }

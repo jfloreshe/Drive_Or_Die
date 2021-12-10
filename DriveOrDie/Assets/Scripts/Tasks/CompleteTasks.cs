@@ -11,7 +11,7 @@ public static class CompletedTasks {
         {
             if (obj.gameObject.name == "WallComplete" + task.Key && !task.Value)
             {
-                TaskPoolObject.taskPool[task.Key].completeTask();
+                TaskPoolObject.taskPool[task.Key] = true;
                 tasks[task.Key] = true;
             }
         }

@@ -10,8 +10,9 @@ public class MenuController : Controller
     public MenuController()
     {
         Debug.Log("Menu has been created");
-        closeMenu();
-              
+        Time.timeScale = 1;
+        setCurrentState(State.RUN);
+
     }
     private State getCurrentState()
     {
@@ -21,15 +22,17 @@ public class MenuController : Controller
     {
         _currentState = state_;
     }
-    private void openMenu()
+    public void openMenu()
     {
         Time.timeScale = 0;
         setCurrentState(State.PAUSE);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("InGameMenu");
     }
-    private void closeMenu()
+    public void closeMenu()
     {
         Time.timeScale = 1;
         setCurrentState(State.RUN);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Drive");
     }
     public void checkUserInput()
     {
@@ -45,7 +48,7 @@ public class MenuController : Controller
             {
                 closeMenu();
             }
-            Debug.Log("my current state is " + getCurrentState());
+            //Debug.Log("my current state is " + getCurrentState());
         }
     }
 }

@@ -15,6 +15,7 @@ public class MovementController : Controller
     public Transform handLeft;
     public Transform handRight;
     public Text velocityInApp;
+    public Text module1InApp;
     
 
     public MovementController()
@@ -27,6 +28,7 @@ public class MovementController : Controller
         handLeft = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         handRight = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         velocityInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
+        module1InApp = GameObject.Find("bike/Bomb/Module1/Canvas/Speed").GetComponent<Text>();
         timeStart = Time.time;
         firstAccelerationDone = false;
         bike.velocity = bike.transform.forward * -BikeObject.velocity;
@@ -44,8 +46,9 @@ public class MovementController : Controller
     {
         if (BikeObject.velocity <= BikeObject.MIN_VELOCITY)
         {
-            BikeObject.velocity = 0f;
+            BikeObject.velocity = 40f;
             currentAcceleration = 0f;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("YouLose");
         }
     }
     public void applyAcceleration()
@@ -58,9 +61,23 @@ public class MovementController : Controller
             player.velocity = bike.velocity;
             //if idle then acceleration decrease
             checkIdleStatus();
+            checkVelocityPuzzle();
             velocityInApp.text = BikeObject.velocity.ToString("F1");
         }
         
+    }
+    public void checkVelocityPuzzle()
+    {
+        if(BikeObject.velocity >= BombObject.module1Velocity - 1 && BikeObject.velocity <= BombObject.module1Velocity + 1)
+        {
+            BombObject.module1Timer -= 1*Time.deltaTime;
+        }
+        if(BombObject.module1Timer <= 0)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("YouWin");
+        }
+        module1InApp.text = BombObject.module1Timer.ToString("F1");
+
     }
     public void checkIdleStatus()
     {

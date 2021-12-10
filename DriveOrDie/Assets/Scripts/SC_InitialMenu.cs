@@ -16,10 +16,11 @@ public class SC_InitialMenu : MonoBehaviour
 
     public void initGlobalValues()
     {
+        MainControllers.menu = new MenuController();
         BikeObject.velocity = BikeObject.MAX_VELOCITY;
         BombObject.timerIsRunning = false;
-        TaskPoolObject.taskPool = new Dictionary<string, Task>();
-        TaskPoolObject.lastPosition = 0;
+        BombObject.module1Timer = 50f;
+        TaskPoolObject.taskPool = new Dictionary<string, bool>();
         AddedTasks.tasks = new Dictionary<string, bool>();
         CompletedTasks.tasks = new Dictionary<string, bool>();
         string[] tasksToAdd = { "TakeRoute","DodgeCars","FindTrafficSign"};

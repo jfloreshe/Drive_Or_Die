@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
     // Start is called before the first frame update
-    public const int TOTAL_TIME = 75;
-    public const int TOTAL_TIME_HALF = TOTAL_TIME / 2;
-    public const int TOTAL_TIME_FIRST_TOP = TOTAL_TIME_HALF + TOTAL_TIME_HALF / 2;
-
+    public int totalTimeHalf;
+    public int totalTimeFirstTop;
     public float currentTime;
-    public float startTime;
-    public bool timerIsRunning = false;
     public Text timerInApp, message;
     public float r, g, b, a;
 
@@ -21,7 +17,7 @@ public class Timer : MonoBehaviour
 
         if (timeLeft <= 0f)
         {
-            timerIsRunning = false;
+            BombObject.timerIsRunning = false;
             timeLeft = 0f;
         }
         int minutes = ((int)timeLeft / 60);
@@ -29,13 +25,13 @@ public class Timer : MonoBehaviour
         timerInApp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         
 
-        if (timeLeft <= TOTAL_TIME_FIRST_TOP && timeLeft >= TOTAL_TIME_HALF/2)
+        if (timeLeft <= totalTimeFirstTop && timeLeft >= totalTimeHalf/2)
         {
             r = 1f;
             timerInApp.color = new Color(r,g,b,a);
             
         }
-        if(timeLeft < TOTAL_TIME_HALF/2)
+        if(timeLeft < totalTimeHalf/2)
         {
             g = 0f;
             timerInApp.color = new Color(r, g, b, a);
@@ -46,9 +42,13 @@ public class Timer : MonoBehaviour
     }
     void Start()
     {
+        totalTimeHalf = TimerObject.totalTime / 2;
+        totalTimeFirstTop = totalTimeHalf + totalTimeHalf / 2;
+
         r = 0; g = 1; b = 0; a = 1;
-        timerIsRunning = true;
-        startTime = Time.time;
+
+        BombObject.timerIsRunning = true;
+
         timerInApp = GameObject.Find("Canvas/Timer").GetComponent<Text>();
         message = GameObject.Find("Canvas/Message").GetComponent<Text>();
     }
@@ -56,10 +56,14 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timerIsRunning)
+        if (BombObject.timerIsRunning)
         {
-            currentTime = Time.time - startTime;
-            showTimeInScreen(TOTAL_TIME - currentTime);
+            currentTime = Time.time - BombObject.startTime;
+            showTimeInScreen(TimerObject.totalTime - currentTime);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("YouLose");
         }
     }
 }

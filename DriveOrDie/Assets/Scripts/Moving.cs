@@ -5,15 +5,14 @@ using UnityEngine.UI;
 
 public class Moving : MonoBehaviour
 {
-    public MainControllers controllers;
     void Start()
     {
-        controllers = new MainControllers();
+        MainControllers.player = new MovementController();
     }
 
     // Update is called once per frame
     void Update()
     {
-        controllers.checkUserInputs();
+        MainControllers.checkUserInputs();
     }
 }

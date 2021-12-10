@@ -10,7 +10,8 @@ public class MenuController : Controller
     public MenuController()
     {
         Debug.Log("Menu has been created");
-        _currentState = State.RUN;
+        closeMenu();
+              
     }
     private State getCurrentState()
     {

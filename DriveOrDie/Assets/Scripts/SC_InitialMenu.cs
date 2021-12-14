@@ -43,6 +43,16 @@ public class SC_InitialMenu : MonoBehaviour
         TimerObject.totalTime = totalGameTime * 60;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Drive");
     }
+
+    public void RightButton()
+    {
+        Debug.Log("HOLA DERECHA");
+    }
+
+    public void LeftButton()
+    {
+        Debug.Log("HOLA IZQUIERDA");
+    }
     public void Play5MinButton()
     {
         PlayButton(5);

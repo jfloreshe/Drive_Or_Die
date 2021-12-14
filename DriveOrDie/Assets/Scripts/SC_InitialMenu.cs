@@ -6,10 +6,16 @@ public class SC_InitialMenu : MonoBehaviour
 {
     public GameObject InitialMenu;
     public GameObject DifficultyMenu;
+    public GameObject button5;
+    public GameObject button7;
+    public GameObject button10;
 
     // Start is called before the first frame update
     void Start()
     {
+        button5 = GameObject.Find("InitialMenu/DifficultyMenu/Canvas/Button5");
+        button7 = GameObject.Find("InitialMenu/DifficultyMenu/Canvas/Button7");
+        button10 = GameObject.Find("InitialMenu/DifficultyMenu/Canvas/Button10");
         initGlobalValues();
         InitialMenuButton();
     }
@@ -46,12 +52,30 @@ public class SC_InitialMenu : MonoBehaviour
 
     public void RightButton()
     {
-        Debug.Log("HOLA DERECHA");
+        if (button5.activeSelf == true)
+        {
+            button7.SetActive(true);
+            button5.SetActive(false);
+        }
+        else if (button7.activeSelf == true)
+        {
+            button10.SetActive(true);
+            button7.SetActive(false);
+        }
     }
 
     public void LeftButton()
     {
-        Debug.Log("HOLA IZQUIERDA");
+        if(button7.activeSelf == true) 
+        {
+            button5.SetActive(true);
+            button7.SetActive(false);
+        }
+        else if(button10.activeSelf == true)
+        {
+            button7.SetActive(true);
+            button10.SetActive(false);
+        }
     }
     public void Play5MinButton()
     {
@@ -70,6 +94,9 @@ public class SC_InitialMenu : MonoBehaviour
         // Show Credits Menu
         InitialMenu.SetActive(false);
         DifficultyMenu.SetActive(true);
+        button5.SetActive(true);
+        button7.SetActive(false);
+        button10.SetActive(false);
     }
 
     public void InitialMenuButton()

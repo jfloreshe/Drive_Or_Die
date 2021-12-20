@@ -16,7 +16,10 @@ public class MovementController : Controller
     public Transform handRight;
     public Text velocityInApp;
     public Text module1InApp;
-    
+    public Text module2InApp;
+    public Renderer light1Renderer;
+    public Renderer light2Renderer;
+
 
     public MovementController()
     {
@@ -29,6 +32,9 @@ public class MovementController : Controller
         handRight = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         velocityInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         module1InApp = GameObject.Find("bike/Bomb/Module1/Canvas/Speed").GetComponent<Text>();
+        module2InApp = GameObject.Find("bike/Bomb/Module2/Canvas/Speed").GetComponent<Text>();
+        light1Renderer = GameObject.Find("bike/Bomb/Light1").GetComponent<Renderer>();
+        light2Renderer = GameObject.Find("bike/Bomb/Light2").GetComponent<Renderer>();
         timeStart = Time.time;
         firstAccelerationDone = false;
         bike.velocity = bike.transform.forward * -BikeObject.velocity;
@@ -68,15 +74,55 @@ public class MovementController : Controller
     }
     public void checkVelocityPuzzle()
     {
-        if(BikeObject.velocity >= BombObject.module1Velocity - 1 && BikeObject.velocity <= BombObject.module1Velocity + 1)
+        if(BombObject.module1Done == false)
         {
-            BombObject.module1Timer -= 1*Time.deltaTime;
+            if (BikeObject.velocity >= BombObject.module1Velocity - 1 && BikeObject.velocity <= BombObject.module1Velocity + 1)
+            {
+                BombObject.module1Timer -= 1 * Time.deltaTime;
+                light1Renderer.material.color = Color.green;
+            }
+            else
+            {
+                light1Renderer.material.color = Color.red;
+            }
+            if (BombObject.module1Timer <= 0)
+            {
+                BombObject.module1Timer = 0;
+                BombObject.module1Done = true;
+            }
         }
-        if(BombObject.module1Timer <= 0)
+        if(BombObject.module2Done == false)
+        {
+            if (BikeObject.velocity >= BombObject.module2Velocity - 1 && BikeObject.velocity <= BombObject.module2Velocity + 1)
+            {
+                BombObject.module2Timer -= 1 * Time.deltaTime;
+                light2Renderer.material.color = Color.green;
+            }
+            else
+            {
+                light2Renderer.material.color = Color.red;
+            }
+            if (BombObject.module2Timer <= 0)
+            {
+                BombObject.module2Timer = 0;
+                BombObject.module2Done = true;
+            }
+        }
+        
+        if (BombObject.module2Done && BombObject.module1Done)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("YouWin");
         }
+        if (BombObject.module1Done)
+        {
+            light1Renderer.material.color = Color.green;
+        }
+        if (BombObject.module2Done)
+        {
+            light2Renderer.material.color = Color.green;
+        }
         module1InApp.text = BombObject.module1Timer.ToString("F1");
+        module2InApp.text = BombObject.module2Timer.ToString("F1");
 
     }
     public void checkIdleStatus()

@@ -1689,7 +1689,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Escoge la dificultad
+  m_Text: 'Dificultad
 
 '
 --- !u!222 &1838035559

@@ -8,12 +8,8 @@ public class MovementController : Controller
     public float currentAcceleration;
     public float timeIdle, timeStart;
     public bool firstAccelerationDone;
-    public Rigidbody player;
     public Rigidbody bike;
     public Transform bikeRotation;
-    public Transform playerRotation;
-    public Transform handLeft;
-    public Transform handRight;
     public Text velocityInApp;
     public Text module1InApp;
     public Text module2InApp;
@@ -26,10 +22,6 @@ public class MovementController : Controller
         currentAcceleration = -0.05f;
         bike = GameObject.Find("bike").GetComponent<Rigidbody>();
         bikeRotation = GameObject.Find("bike").GetComponent<Transform>();
-        player = GameObject.Find("OVRPlayerController").GetComponent<Rigidbody>();
-        playerRotation = GameObject.Find("OVRPlayerController").GetComponent<Transform>();
-        handLeft = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
-        handRight = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         velocityInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         module1InApp = GameObject.Find("bike/Bomb/Module1/Canvas/Speed").GetComponent<Text>();
         module2InApp = GameObject.Find("bike/Bomb/Module2/Canvas/Speed").GetComponent<Text>();
@@ -38,7 +30,6 @@ public class MovementController : Controller
         timeStart = Time.time;
         firstAccelerationDone = false;
         bike.velocity = bike.transform.forward * -BikeObject.velocity;
-        player.velocity = bike.velocity;
     }
     public void checkHighestSpeed()
     {
@@ -64,7 +55,6 @@ public class MovementController : Controller
             BikeObject.velocity += currentAcceleration * Time.deltaTime * 20;
             checkHighestSpeed(); checkLowestSpeed();
             bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
             //if idle then acceleration decrease
             checkIdleStatus();
             checkVelocityPuzzle();
@@ -155,20 +145,20 @@ public class MovementController : Controller
         }
         if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            bikeRotation.Rotate(new Vector3(0, -1f, 0));
-            playerRotation.Rotate(new Vector3(0, -1f, 0));
-            bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
-
-
+            if(bike != null)
+            {
+                bikeRotation.Rotate(new Vector3(0, -1f, 0));
+                bike.velocity = bike.transform.forward * -BikeObject.velocity;
+            }
+            
         }
         else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            bikeRotation.Rotate(new Vector3(0, 1f, 0));
-            playerRotation.Rotate(new Vector3(0, 1f, 0));
-            bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
-
+            if(bike != null)
+            {
+                bikeRotation.Rotate(new Vector3(0, 1f, 0));
+                bike.velocity = bike.transform.forward * -BikeObject.velocity;
+            }
         }
     }
 }

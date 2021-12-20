@@ -16,7 +16,6 @@ public class CheckEvents : MonoBehaviour
     public GameObject bike;
     public Transform imageTask;
     public Canvas taskCanvas;
-    public Rigidbody player;
     bool hasCollided = false;
     bool hasCollided2 = false;
     string[] noCollisiona = { "WallAddTakeRoute","WallAddFindTrafficSign","WallAddDodgeCars",
@@ -39,7 +38,6 @@ public class CheckEvents : MonoBehaviour
         {
             Debug.Log(other.gameObject.name);
             Destroy(bike);
-            player.velocity = new Vector3(0, 0, 0);
             BombObject.timerIsRunning = false;
             BombObject.module1Velocity = 0f;
             BombObject.module2Velocity = 0f;
@@ -48,7 +46,6 @@ public class CheckEvents : MonoBehaviour
     }
     void Start()
     {
-        player = GameObject.Find("OVRPlayerController").GetComponent<Rigidbody>();
         bike = GameObject.Find("bike");
     }
 

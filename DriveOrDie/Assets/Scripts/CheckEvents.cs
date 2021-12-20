@@ -36,7 +36,6 @@ public class CheckEvents : MonoBehaviour
 
         if (Array.IndexOf(noCollisiona, other.gameObject.name) == -1)
         {
-            Debug.Log(other.gameObject.name);
             Destroy(bike);
             BombObject.timerIsRunning = false;
             BombObject.module1Velocity = 0f;

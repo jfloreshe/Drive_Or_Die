@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitMovement : MonoBehaviour
 {
-    float multForce = 30f;
+    float multForce = 15f;
     public Rigidbody car;
     // Start is called before the first frame update
     void Start()

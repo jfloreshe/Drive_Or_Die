@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MovementController : Controller
 {
     public float currentAcceleration;
-    public float timeIdle, timeStart;
+    public float timePressed, timeStart;
     public bool firstAccelerationDone;
     public Rigidbody bike;
     public Transform bikeRotation;
@@ -56,7 +56,8 @@ public class MovementController : Controller
             checkHighestSpeed(); checkLowestSpeed();
             bike.velocity = bike.transform.forward * -BikeObject.velocity;
             //if idle then acceleration decrease
-            checkIdleStatus();
+            //checkIdleStatus();
+            currentAcceleration = -0.025f;
             checkVelocityPuzzle();
             velocityInApp.text = BikeObject.velocity.ToString("F1");
         }
@@ -66,7 +67,7 @@ public class MovementController : Controller
     {
         if(BombObject.module1Done == false)
         {
-            if (BikeObject.velocity >= BombObject.module1Velocity - 1 && BikeObject.velocity <= BombObject.module1Velocity + 1)
+            if (BikeObject.velocity >= BombObject.module1Velocity - 3 && BikeObject.velocity <= BombObject.module1Velocity + 3)
             {
                 BombObject.module1Timer -= 1 * Time.deltaTime;
                 light1Renderer.material.color = Color.green;
@@ -83,7 +84,7 @@ public class MovementController : Controller
         }
         if(BombObject.module2Done == false)
         {
-            if (BikeObject.velocity >= BombObject.module2Velocity - 1 && BikeObject.velocity <= BombObject.module2Velocity + 1)
+            if (BikeObject.velocity >= BombObject.module2Velocity - 3 && BikeObject.velocity <= BombObject.module2Velocity + 3)
             {
                 BombObject.module2Timer -= 1 * Time.deltaTime;
                 light2Renderer.material.color = Color.green;
@@ -115,34 +116,38 @@ public class MovementController : Controller
         module2InApp.text = BombObject.module2Timer.ToString("F1");
 
     }
-    public void checkIdleStatus()
-    {
-        if (firstAccelerationDone)
-        {
-            timeIdle = Time.time - timeStart;
-            if (timeIdle >= 10f)
-            {
-                currentAcceleration = -0.1f;
-                timeStart = Time.time;
-                timeIdle = 0;
-            }
-        }
-    }
+   
     public void checkUserInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                timeStart = Time.time;
+                timePressed = 0.01f;
+            }
+            timePressed = Time.time - timeStart;
             firstAccelerationDone = true;
-            currentAcceleration += 0.05f;
-            timeStart = Time.time;
-            return;
+            currentAcceleration += (0.2f * timePressed);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            currentAcceleration -= 0.05f;
-            timeStart = Time.time;
-            return;
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                timeStart = Time.time;
+                timePressed = 0.01f;
+            }
+            timePressed = Time.time - timeStart;
+            if (currentAcceleration <= 5.0)
+            {
+                currentAcceleration -= (0.2f * timePressed);
+            } else
+            {
+                currentAcceleration -= 5.0f;
+            }            
         }
+
+
         if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             if(bike != null)
@@ -152,7 +157,7 @@ public class MovementController : Controller
             }
             
         }
-        else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             if(bike != null)
             {

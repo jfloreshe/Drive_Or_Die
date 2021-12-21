@@ -23,7 +23,7 @@ public class SC_InitialMenu : MonoBehaviour
     public void initGlobalValues()
     {
         MainControllers.menu = new MenuController();
-        BikeObject.velocity = BikeObject.MAX_VELOCITY;
+        BikeObject.velocity = 25f;
         BombObject.timerIsRunning = false;
         BombObject.module1Timer = 50f;
         BombObject.module2Timer = 50f;

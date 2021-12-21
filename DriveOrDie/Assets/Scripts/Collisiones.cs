@@ -5,7 +5,7 @@ using System;
 
 public class Collisiones : MonoBehaviour
 {
-    float multForce = 30f;
+    float multForce = 15f;
     public Rigidbody carRigidBody;
     public Transform carTransform;
 

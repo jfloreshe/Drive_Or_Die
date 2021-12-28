@@ -9,7 +9,8 @@ public class Collisiones : MonoBehaviour
     public Rigidbody carRigidBody;
     public Transform carTransform;
 
-    string[] noCollisiona = { "WallAddTakeRoute", "WallCompleteTakeRoute2", "WallCompleteTakeRoute1", "WallAddFindTrafficSign", "WallAddDodgeCars",
+    string[] noCollisiona = { "WallAddTakeRoute", "WallCompleteTakeRoute2", "WallCompleteTakeRoute1",
+        "WallTriggerRoute0", "WallTriggerRoute1","WallTriggerRoute2","WallAddFindTrafficSign", "WallAddDodgeCars",
     "WallTrigger30", "WallTrigger40", "WallTrigger20", "WallTriggerRoute2-30", "WallTriggerRoute2-40", "WallTriggerRoute2-20", "GrabVolumeBig",
     "GrabVolumeSmall", "acelerador", "Wall1", "Cube"};
      

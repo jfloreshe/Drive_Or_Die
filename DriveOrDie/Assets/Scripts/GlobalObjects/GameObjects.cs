@@ -7,6 +7,22 @@ public static class BikeObject
     public const float MAX_VELOCITY = 45f;
     public const float MIN_VELOCITY = 0f;
     public static float velocity { get; set; }
+    public static int currentRoute { get; set; }
+    public static void checkRoute(Collider obj)
+    {
+        if(obj.name == "WallTriggerRoute1")
+        {
+            currentRoute = 1;
+        }
+        else if(obj.name == "WallTriggerRoute2")
+        {
+            currentRoute = 2;
+        }
+        else if(obj.name == "WallTriggerRoute0")
+        {
+            currentRoute = 0;
+        }
+    }
 }
 
 public static class BombObject

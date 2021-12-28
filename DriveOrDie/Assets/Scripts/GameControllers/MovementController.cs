@@ -65,8 +65,33 @@ public class MovementController : Controller
     }
     public void checkVelocityPuzzle()
     {
-        if(BombObject.module1Done == false)
+        if(BikeObject.currentRoute == 0)
         {
+            if(BombObject.module1Done == false)
+            {
+                light1Renderer.material.color = Color.gray;
+                module1InApp.color = Color.gray;
+            }
+            else
+            {
+                light1Renderer.material.color = Color.green;
+                module1InApp.color = Color.green;
+            }
+            if(BombObject.module2Done == false)
+            {
+                light2Renderer.material.color = Color.gray;
+                module2InApp.color = Color.gray;
+            }
+            else
+            {
+                light2Renderer.material.color = Color.green;
+                module2InApp.color = Color.green;
+            }
+        }
+
+        if(BombObject.module1Done == false && BikeObject.currentRoute == 1)
+        {
+            module1InApp.color = Color.green;
             if (BikeObject.velocity >= BombObject.module1Velocity - 3 && BikeObject.velocity <= BombObject.module1Velocity + 3)
             {
                 BombObject.module1Timer -= 1 * Time.deltaTime;
@@ -82,8 +107,9 @@ public class MovementController : Controller
                 BombObject.module1Done = true;
             }
         }
-        if(BombObject.module2Done == false)
+        if(BombObject.module2Done == false && BikeObject.currentRoute == 2)
         {
+            module2InApp.color = Color.green;
             if (BikeObject.velocity >= BombObject.module2Velocity - 3 && BikeObject.velocity <= BombObject.module2Velocity + 3)
             {
                 BombObject.module2Timer -= 1 * Time.deltaTime;
@@ -107,13 +133,23 @@ public class MovementController : Controller
         if (BombObject.module1Done)
         {
             light1Renderer.material.color = Color.green;
+            module1InApp.text = "---";
+        }
+        else
+        {
+            module1InApp.text = BombObject.module1Timer.ToString("F1");
         }
         if (BombObject.module2Done)
         {
             light2Renderer.material.color = Color.green;
+            module2InApp.text = "---";
         }
-        module1InApp.text = BombObject.module1Timer.ToString("F1");
-        module2InApp.text = BombObject.module2Timer.ToString("F1");
+        else
+        {
+            module2InApp.text = BombObject.module2Timer.ToString("F1");
+        }
+        
+       
 
     }
    

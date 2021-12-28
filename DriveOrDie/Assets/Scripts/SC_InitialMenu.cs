@@ -24,6 +24,7 @@ public class SC_InitialMenu : MonoBehaviour
     {
         MainControllers.menu = new MenuController();
         BikeObject.velocity = 25f;
+        BikeObject.currentRoute = 0;
         BombObject.timerIsRunning = false;
         BombObject.module1Timer = 50f;
         BombObject.module2Timer = 50f;
@@ -55,14 +56,14 @@ public class SC_InitialMenu : MonoBehaviour
 
     public void RightButton()
     {
-        if (button5.activeSelf == true)
+        if (button10.activeSelf == true)
         {
             button7.SetActive(true);
-            button5.SetActive(false);
+            button10.SetActive(false);
         }
         else if (button7.activeSelf == true)
         {
-            button10.SetActive(true);
+            button5.SetActive(true);
             button7.SetActive(false);
         }
     }
@@ -71,13 +72,13 @@ public class SC_InitialMenu : MonoBehaviour
     {
         if(button7.activeSelf == true) 
         {
-            button5.SetActive(true);
+            button10.SetActive(true);
             button7.SetActive(false);
         }
-        else if(button10.activeSelf == true)
+        else if(button5.activeSelf == true)
         {
             button7.SetActive(true);
-            button10.SetActive(false);
+            button5.SetActive(false);
         }
     }
     public void Play5MinButton()
@@ -97,9 +98,9 @@ public class SC_InitialMenu : MonoBehaviour
         // Show Credits Menu
         InitialMenu.SetActive(false);
         DifficultyMenu.SetActive(true);
-        button5.SetActive(true);
+        button5.SetActive(false);
         button7.SetActive(false);
-        button10.SetActive(false);
+        button10.SetActive(true);
     }
 
     public void InitialMenuButton()

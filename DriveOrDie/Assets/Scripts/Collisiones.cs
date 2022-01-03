@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Collisiones : MonoBehaviour
 {
-    float multForce = 30f;
+    float multForce = 15f;
     public Rigidbody carRigidBody;
     public Transform carTransform;
-    
+
+    string[] noCollisiona = { "WallAddTakeRoute", "WallCompleteTakeRoute2", "WallCompleteTakeRoute1",
+        "WallTriggerRoute0", "WallTriggerRoute1","WallTriggerRoute2","WallAddFindTrafficSign", "WallAddDodgeCars",
+    "WallTrigger30", "WallTrigger40", "WallTrigger20", "WallTriggerRoute2-30", "WallTriggerRoute2-40", "WallTriggerRoute2-20", "GrabVolumeBig",
+    "GrabVolumeSmall", "acelerador", "Wall1", "Cube"};
+     
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +28,6 @@ public class Collisiones : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.gameObject.name == "Poste8")
         {
             carTransform.Rotate(0, 45, 0);
@@ -30,13 +36,13 @@ public class Collisiones : MonoBehaviour
 
         }
         
-        else if(other.gameObject.name == "GrabVolumeBig" || other.gameObject.name == "GrabVolumeSmall" || 
-                other.gameObject.name == "acelerador"|| other.gameObject.name == "Wall1")
+        else if(Array.IndexOf(noCollisiona, other.gameObject.name) != -1)
         {
             ; // Do nothing
         }
         else
         {
+            Debug.Log(other.gameObject.name);
             carTransform.Rotate(0, 45, 0);
             carRigidBody.velocity = carRigidBody.transform.right * -multForce;
         }

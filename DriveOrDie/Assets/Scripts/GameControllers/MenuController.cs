@@ -32,6 +32,9 @@ public class MenuController : Controller
     {
         Time.timeScale = 1;
         setCurrentState(State.RUN);
+        //like we are not saving position reset speeds
+        BombObject.module1Velocity = 0f;
+        BombObject.module2Velocity = 0f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Drive");
     }
     public void checkUserInput()

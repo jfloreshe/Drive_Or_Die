@@ -7,6 +7,22 @@ public static class BikeObject
     public const float MAX_VELOCITY = 45f;
     public const float MIN_VELOCITY = 0f;
     public static float velocity { get; set; }
+    public static int currentRoute { get; set; }
+    public static void checkRoute(Collider obj)
+    {
+        if(obj.name == "WallTriggerRoute1")
+        {
+            currentRoute = 1;
+        }
+        else if(obj.name == "WallTriggerRoute2")
+        {
+            currentRoute = 2;
+        }
+        else if(obj.name == "WallTriggerRoute0")
+        {
+            currentRoute = 0;
+        }
+    }
 }
 
 public static class BombObject
@@ -14,20 +30,45 @@ public static class BombObject
     public static float startTime { get; set; }
     public static bool timerIsRunning { get; set; }
     public static float module1Timer { get; set; }
+    public static float module2Timer { get; set; }
     public static float module1Velocity { get; set; }
+    public static float module2Velocity { get; set; }
+    public static bool module1Done { get; set; }
+    public static bool module2Done { get; set; }
     public static void checkModule1State(Collider obj)
     {
         if(obj.name == "WallTrigger30")
         {
             module1Velocity = 30f;
+            module2Velocity = 0f;
         }
         else if(obj.name == "WallTrigger40")
         {
             module1Velocity = 40f;
+            module2Velocity = 0f;
         }
         else if(obj.name == "WallTrigger20")
         {
             module1Velocity = 20f;
+            module2Velocity = 0f;
+        }
+    }
+    public static void checkModule2State(Collider obj)
+    {
+        if (obj.name == "WallTriggerRoute2-30")
+        {
+            module2Velocity = 30f;
+            module1Velocity = 0f;
+        }
+        else if (obj.name == "WallTriggerRoute2-40")
+        {
+            module2Velocity = 40f;
+            module1Velocity = 0f;
+        }
+        else if (obj.name == "WallTriggerRoute2-20")
+        {
+            module2Velocity = 20f;
+            module1Velocity = 0f;
         }
     }
 }

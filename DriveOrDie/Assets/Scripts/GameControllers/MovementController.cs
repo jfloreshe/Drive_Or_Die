@@ -6,33 +6,30 @@ using UnityEngine.UI;
 public class MovementController : Controller
 {
     public float currentAcceleration;
-    public float timeIdle, timeStart;
+    public float timePressed, timeStart;
     public bool firstAccelerationDone;
-    public Rigidbody player;
     public Rigidbody bike;
     public Transform bikeRotation;
-    public Transform playerRotation;
-    public Transform handLeft;
-    public Transform handRight;
     public Text velocityInApp;
     public Text module1InApp;
-    
+    public Text module2InApp;
+    public Renderer light1Renderer;
+    public Renderer light2Renderer;
+
 
     public MovementController()
     {
         currentAcceleration = -0.05f;
         bike = GameObject.Find("bike").GetComponent<Rigidbody>();
         bikeRotation = GameObject.Find("bike").GetComponent<Transform>();
-        player = GameObject.Find("OVRPlayerController").GetComponent<Rigidbody>();
-        playerRotation = GameObject.Find("OVRPlayerController").GetComponent<Transform>();
-        handLeft = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
-        handRight = GameObject.Find("OVRPlayerController/OVRCameraRig/TrackingSpace/LeftHandAnchor").GetComponent<Transform>();
         velocityInApp = GameObject.Find("bike/Velocimetro/Canvas/Speed").GetComponent<Text>();
         module1InApp = GameObject.Find("bike/Bomb/Module1/Canvas/Speed").GetComponent<Text>();
+        module2InApp = GameObject.Find("bike/Bomb/Module2/Canvas/Speed").GetComponent<Text>();
+        light1Renderer = GameObject.Find("bike/Bomb/Light1").GetComponent<Renderer>();
+        light2Renderer = GameObject.Find("bike/Bomb/Light2").GetComponent<Renderer>();
         timeStart = Time.time;
         firstAccelerationDone = false;
         bike.velocity = bike.transform.forward * -BikeObject.velocity;
-        player.velocity = bike.velocity;
     }
     public void checkHighestSpeed()
     {
@@ -58,9 +55,9 @@ public class MovementController : Controller
             BikeObject.velocity += currentAcceleration * Time.deltaTime * 20;
             checkHighestSpeed(); checkLowestSpeed();
             bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
             //if idle then acceleration decrease
-            checkIdleStatus();
+            //checkIdleStatus();
+            currentAcceleration = -0.025f;
             checkVelocityPuzzle();
             velocityInApp.text = BikeObject.velocity.ToString("F1");
         }
@@ -68,61 +65,141 @@ public class MovementController : Controller
     }
     public void checkVelocityPuzzle()
     {
-        if(BikeObject.velocity >= BombObject.module1Velocity - 1 && BikeObject.velocity <= BombObject.module1Velocity + 1)
+        if(BikeObject.currentRoute == 0)
         {
-            BombObject.module1Timer -= 1*Time.deltaTime;
+            if(BombObject.module1Done == false)
+            {
+                light1Renderer.material.color = Color.gray;
+                module1InApp.color = Color.gray;
+            }
+            else
+            {
+                light1Renderer.material.color = Color.green;
+                module1InApp.color = Color.green;
+            }
+            if(BombObject.module2Done == false)
+            {
+                light2Renderer.material.color = Color.gray;
+                module2InApp.color = Color.gray;
+            }
+            else
+            {
+                light2Renderer.material.color = Color.green;
+                module2InApp.color = Color.green;
+            }
         }
-        if(BombObject.module1Timer <= 0)
+
+        if(BombObject.module1Done == false && BikeObject.currentRoute == 1)
+        {
+            module1InApp.color = Color.green;
+            if (BikeObject.velocity >= BombObject.module1Velocity - 3 && BikeObject.velocity <= BombObject.module1Velocity + 3)
+            {
+                BombObject.module1Timer -= 1 * Time.deltaTime;
+                light1Renderer.material.color = Color.green;
+            }
+            else
+            {
+                light1Renderer.material.color = Color.red;
+            }
+            if (BombObject.module1Timer <= 0)
+            {
+                BombObject.module1Timer = 0;
+                BombObject.module1Done = true;
+            }
+        }
+        if(BombObject.module2Done == false && BikeObject.currentRoute == 2)
+        {
+            module2InApp.color = Color.green;
+            if (BikeObject.velocity >= BombObject.module2Velocity - 3 && BikeObject.velocity <= BombObject.module2Velocity + 3)
+            {
+                BombObject.module2Timer -= 1 * Time.deltaTime;
+                light2Renderer.material.color = Color.green;
+            }
+            else
+            {
+                light2Renderer.material.color = Color.red;
+            }
+            if (BombObject.module2Timer <= 0)
+            {
+                BombObject.module2Timer = 0;
+                BombObject.module2Done = true;
+            }
+        }
+        
+        if (BombObject.module2Done && BombObject.module1Done)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("YouWin");
         }
-        module1InApp.text = BombObject.module1Timer.ToString("F1");
+        if (BombObject.module1Done)
+        {
+            light1Renderer.material.color = Color.green;
+            module1InApp.text = "---";
+        }
+        else
+        {
+            module1InApp.text = BombObject.module1Timer.ToString("F1");
+        }
+        if (BombObject.module2Done)
+        {
+            light2Renderer.material.color = Color.green;
+            module2InApp.text = "---";
+        }
+        else
+        {
+            module2InApp.text = BombObject.module2Timer.ToString("F1");
+        }
+        
+       
 
     }
-    public void checkIdleStatus()
-    {
-        if (firstAccelerationDone)
-        {
-            timeIdle = Time.time - timeStart;
-            if (timeIdle >= 10f)
-            {
-                currentAcceleration = -0.1f;
-                timeStart = Time.time;
-                timeIdle = 0;
-            }
-        }
-    }
+   
     public void checkUserInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                timeStart = Time.time;
+                timePressed = 0.01f;
+            }
+            timePressed = Time.time - timeStart;
             firstAccelerationDone = true;
-            currentAcceleration += 0.05f;
-            timeStart = Time.time;
-            return;
+            currentAcceleration += (0.2f * timePressed);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
-            currentAcceleration -= 0.05f;
-            timeStart = Time.time;
-            return;
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            {
+                timeStart = Time.time;
+                timePressed = 0.01f;
+            }
+            timePressed = Time.time - timeStart;
+            if (currentAcceleration <= 5.0)
+            {
+                currentAcceleration -= (0.2f * timePressed);
+            } else
+            {
+                currentAcceleration -= 5.0f;
+            }            
         }
+
+
         if (OVRInput.Get(OVRInput.Button.Four) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            bikeRotation.Rotate(new Vector3(0, -1f, 0));
-            playerRotation.Rotate(new Vector3(0, -1f, 0));
-            bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
-
-
+            if(bike != null)
+            {
+                bikeRotation.Rotate(new Vector3(0, -1f, 0));
+                bike.velocity = bike.transform.forward * -BikeObject.velocity;
+            }
+            
         }
-        else if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (OVRInput.Get(OVRInput.Button.Two) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            bikeRotation.Rotate(new Vector3(0, 1f, 0));
-            playerRotation.Rotate(new Vector3(0, 1f, 0));
-            bike.velocity = bike.transform.forward * -BikeObject.velocity;
-            player.velocity = bike.velocity;
-
+            if(bike != null)
+            {
+                bikeRotation.Rotate(new Vector3(0, 1f, 0));
+                bike.velocity = bike.transform.forward * -BikeObject.velocity;
+            }
         }
     }
 }
